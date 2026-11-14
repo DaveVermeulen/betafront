@@ -54,14 +54,12 @@ public class ObjBlockModel<T extends BlockLogic> extends BlockModelStandard<T> {
                 tilePos.add(cull, lightPos);
             else
                 lightPos.set(x, y, z);
+            // The light index holds sky and block light; BTA's lightmap turns it into a brightness
+            // when the chunk is drawn, so day/night applies without rebuilding the chunk.
             byte lightIndex = block.getLightIndex(world, lightPos);
-            float brightness = renderBlocks.getBlockBrightness(world, lightPos);
-            if (quad.emission() > 0f) {
-                int emitted = Math.round(quad.emission() * 15f);
-                if (emitted > LightIndexHelper.blockLightFromIndex(lightIndex))
-                    lightIndex = LightIndexHelper.setBlockLight(lightIndex, emitted);
-                brightness = Math.max(brightness, quad.emission());
-            }
+            int emitted = Math.round(quad.emission() * 15f);
+            if (emitted > LightIndexHelper.blockLightFromIndex(lightIndex))
+                lightIndex = LightIndexHelper.setBlockLight(lightIndex, emitted);
 
             // BTA shades faces by direction from the vertex normal; a quad with shading turned off
             // gets an upward normal, which BTA leaves at full brightness.
@@ -70,7 +68,9 @@ public class ObjBlockModel<T extends BlockLogic> extends BlockModelStandard<T> {
             else
                 tessellator.setNormal(0f, 1f, 0f);
             tessellator.setLightmapCoord1i(lightIndex);
-            tessellator.setShade1i((int) (Math.min(brightness, 1f) * 255f));
+            // In BTA the shade is only the ambient-occlusion factor (1 = unoccluded), not world
+            // brightness; putting world brightness here would bake the time of day into the chunk.
+            tessellator.setShade1i(255);
             tessellator.setColorOpaque3f(1f, 1f, 1f);
 
             float[][] pos = quad.positions();
