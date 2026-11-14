@@ -1,0 +1,8 @@
+// Opening this folder in IntelliJ imports all three builds at once.
+// Each folder is still its own Gradle build (the BTA and StationAPI builds need
+// different Loom setups), so they are joined here as included builds.
+rootProject.name = 'betafront'
+
+includeBuild 'core'
+includeBuild 'stationapi'
+includeBuild 'bta'

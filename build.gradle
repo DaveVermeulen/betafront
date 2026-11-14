@@ -1,0 +1,29 @@
+// Shortcut tasks for the included builds. They show up under "betafront > betafront"
+// in IntelliJ's Gradle tool window and back the run configurations in .run/.
+def included(String build, String path) {
+    gradle.includedBuild(build).task(path)
+}
+
+tasks.register('runClientBta') {
+    group = 'betafront'
+    description = 'Starts the Better Than Adventure dev client with the example blocks.'
+    dependsOn included('bta', ':runClient')
+}
+
+tasks.register('runClientBabric') {
+    group = 'betafront'
+    description = 'Starts the StationAPI (regular Babric b1.7.3) dev client with the example blocks.'
+    dependsOn included('stationapi', ':runClient')
+}
+
+tasks.register('testCore') {
+    group = 'betafront'
+    description = 'Runs the OBJ parser tests.'
+    dependsOn included('core', ':test')
+}
+
+tasks.register('buildAll') {
+    group = 'betafront'
+    description = 'Runs the parser tests and builds both mod jars.'
+    dependsOn included('core', ':test'), included('stationapi', ':build'), included('bta', ':build')
+}

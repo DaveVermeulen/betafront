@@ -136,9 +136,25 @@ They are not registered in a normal game.
 
 ## Building
 
+### In IntelliJ IDEA
+
+Open the repository folder (not one of the subfolders) and let IntelliJ import the Gradle project; it picks up all three builds. Then pick a run configuration from the dropdown at the top:
+
+- **Run Client (BTA)**: the Better Than Adventure dev client with the example blocks
+- **Run Client (Babric)**: the StationAPI dev client with the example blocks
+- **Core Tests**: the parser tests
+- **Build All**: tests plus both mod jars
+
+Use the debug button instead of run to stop at breakpoints. Set IntelliJ's Gradle JVM to Java 21 or newer (Settings > Build, Execution, Deployment > Build Tools > Gradle).
+
+### From a terminal
+
 Run these from the repository root:
 
 ```
+./gradlew buildAll                # tests plus both mod jars
+./gradlew runClientBta            # same as -p bta runClient
+./gradlew runClientBabric         # same as -p stationapi runClient
 ./gradlew -p core test            # parser unit tests
 ./gradlew -p bta build            # BTA mod jar in bta/build/libs
 ./gradlew -p bta runClient        # BTA dev client with the example blocks
