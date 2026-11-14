@@ -1,8 +1,8 @@
-# ObjModelsBabric
+# Betafront
 
 Wavefront `.obj` block and item models for [StationAPI](https://github.com/ModificationStation/StationAPI) on Babric (Minecraft Beta 1.7.3).
 
-ObjModelsBabric is an add-on: StationAPI stays unmodified. Any StationAPI model JSON can point at an `.obj` file, using the same JSON shape as NeoForge's `neoforge:obj` loader, so models made for modern NeoForge carry over with few edits.
+Betafront is an add-on: StationAPI stays unmodified. Any StationAPI model JSON can point at an `.obj` file, using the same JSON shape as NeoForge's `neoforge:obj` loader, so models made for modern NeoForge carry over with few edits.
 
 > **AI disclaimer:** most of this mod's code and documentation was written with the help of Claude, an AI assistant by Anthropic, and reviewed by the author. The OBJ parsing code is adapted from NeoForge (see [Licence](#licence)). Please report anything that looks wrong as an issue.
 
@@ -14,27 +14,27 @@ To play with it:
 | --- | --- | --- |
 | Minecraft | Beta 1.7.3 | Client side; the mod only changes rendering |
 | [Babric](https://github.com/babric/prism-instance) (Fabric Loader for beta) | 0.19.3 or newer | The Babric Prism instance is the easiest way to set it up |
-| [StationAPI](https://modrinth.com/mod/stationapi) | 2.0.0-alpha.6.5 or newer | Required; ObjModelsBabric hooks into its model loader |
+| [StationAPI](https://modrinth.com/mod/stationapi) | 2.0.0-alpha.6.5 or newer | Required; Betafront hooks into its model loader |
 | Java | 17 or newer | |
 
 To build it:
 
 | Dependency | Version |
 | --- | --- |
-| JDK | 17 or newer |
+| JDK to run Gradle | 21 or newer (the mod itself is compiled for Java 17 through the toolchain, so a JDK 17 must also be installed or downloadable) |
 | Gradle | 9.5.1 (wrapper included) |
 | fabric-loom | 1.17.20 |
-| babric-loom-extension | 1.17.4 |
+| babric-loom-extension | 1.17.5 (1.17.4 fails with an UnsupportedOperationException) |
 | biny mappings | b1.7.3+e1fe071 |
 | JUnit Jupiter (tests only) | 5.10.2 |
 
 ## Using it in a mod
 
-Add ObjModelsBabric as a dependency, then write the model JSON as usual under `assets/<modid>/stationapi/models/`:
+Add Betafront as a dependency, then write the model JSON as usual under `assets/<modid>/stationapi/models/`:
 
 ```json
 {
-  "loader": "objmodelsbabric:obj",
+  "loader": "betafront:obj",
   "model": "examplemod:stationapi/models/block/lamp.obj",
   "flip_v": true,
   "textures": {
@@ -52,7 +52,7 @@ Blocks with an OBJ model are usually not full cubes, so override `isOpaque()` an
 
 | Key | Default | What it does |
 | --- | --- | --- |
-| `loader` | required | `objmodelsbabric:obj` (`neoforge:obj` and `forge:obj` are accepted too) |
+| `loader` | required | `betafront:obj` (`neoforge:obj` and `forge:obj` are accepted too) |
 | `model` | required | The `.obj` file, relative to the namespace root |
 | `mtl_override` | none | Use this `.mtl` instead of the file's `mtllib` line |
 | `textures` | none | Texture map. `usemtl #texture0` or MTL `map_Kd #texture0` refers to `texture0` here |
@@ -73,7 +73,7 @@ Blocks with an OBJ model are usually not full cubes, so override `isOpaque()` an
 
 - `v`, `vt`, `vn`, `f` (including negative indices and `v//vn`), `o`, `g`, `s`, `usemtl`, `mtllib`.
 - Triangles, quads and larger polygons. Larger polygons are fan-split, so they should be convex.
-- MTL: `newmtl`, `Kd`, `Ka`, `map_Kd`, `d`, plus `neoforge_TintIndex`/`objmodelsbabric_TintIndex` for block colour tinting.
+- MTL: `newmtl`, `Kd`, `Ka`, `map_Kd`, `d`, plus `neoforge_TintIndex`/`betafront_TintIndex` for block colour tinting.
 - Coordinates are block units: `0` to `1` fills one block.
 
 Not supported yet: entity and block-entity rendering, per-vertex colours (`vc`), MTL colour tints (`Kd` is read but not applied), group visibility toggles.
@@ -82,8 +82,8 @@ Not supported yet: entity and block-entity rendering, per-vertex colours (`vc`),
 
 In the development client (`./gradlew runClient`) the mod registers two test blocks, each with an OBJ item model too:
 
-- `objmodelsbabric:example_crystal`: a crystal cluster exported from Blender, with no `.mtl` (uses `usemtl #texture0`).
-- `objmodelsbabric:obj_ramp`: a ramp that turns to face the player, to check blockstate rotations and culling.
+- `betafront:example_crystal`: a crystal cluster exported from Blender, with no `.mtl` (uses `usemtl #texture0`).
+- `betafront:obj_ramp`: a ramp that turns to face the player, to check blockstate rotations and culling.
 
 They are not registered in a normal game.
 

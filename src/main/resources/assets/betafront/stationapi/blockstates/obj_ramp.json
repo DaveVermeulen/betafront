@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "betafront:block/obj_ramp" },
+    "facing=east":  { "model": "betafront:block/obj_ramp", "y": 90 },
+    "facing=south": { "model": "betafront:block/obj_ramp", "y": 180 },
+    "facing=west":  { "model": "betafront:block/obj_ramp", "y": 270 }
+  }
+}

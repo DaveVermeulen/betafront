@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-only
  *
  * Ported from NeoForge 1.21.1 (net.neoforged.neoforge.client.model.obj.ObjModel), parse half
- * and the vertex half of makeQuad, for ObjModelsBabric on Babric b1.7.3. Changes: no Minecraft or
+ * and the vertex half of makeQuad, for Betafront on Babric b1.7.3. Changes: no Minecraft or
  * JOML types so it can be unit tested; faces with more than four vertices are fan-split into
  * several quads instead of being cut to the first four; meshes without a material are kept
  * (they use the model's default texture) instead of being dropped; usemtl with an unknown
@@ -11,7 +11,7 @@
  * material uses the JSON texture "name", and a missing mtllib file is treated as an empty library.
  */
 
-package io.github.davevermeulen.objmodelsbabric.obj;
+package io.github.davevermeulen.betafront.obj;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

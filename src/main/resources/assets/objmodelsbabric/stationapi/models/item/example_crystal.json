@@ -1,9 +1,0 @@
-{
-  "loader": "objmodelsbabric:obj",
-  "model": "objmodelsbabric:stationapi/models/block/example_crystal.obj",
-  "flip_v": true,
-  "textures": {
-    "particle": "objmodelsbabric:block/example_crystal",
-    "texture0": "objmodelsbabric:block/example_crystal"
-  }
-}

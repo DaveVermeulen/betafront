@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "id": "objmodelsbabric",
+  "id": "betafront",
   "version": "${version}",
 
-  "name": "ObjModelsBabric",
-  "description": "Wavefront OBJ block and item models for StationAPI. Point a model JSON at an .obj file with \"loader\": \"objmodelsbabric:obj\".",
+  "name": "Betafront",
+  "description": "Wavefront OBJ block and item models for StationAPI. Point a model JSON at an .obj file with \"loader\": \"betafront:obj\".",
   "authors": [
     "Dave"
   ],
@@ -21,10 +21,10 @@
   "environment": "*",
   "entrypoints": {
     "stationapi:event_bus": [
-      "io.github.davevermeulen.objmodelsbabric.example.ExampleContent"
+      "io.github.davevermeulen.betafront.example.ExampleContent"
     ],
     "stationapi:event_bus_client": [
-      "io.github.davevermeulen.objmodelsbabric.client.ObjModelsClient"
+      "io.github.davevermeulen.betafront.client.ObjModelsClient"
     ]
   },
 
