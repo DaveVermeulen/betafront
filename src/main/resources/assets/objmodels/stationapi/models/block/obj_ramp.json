@@ -1,9 +1,0 @@
-{
-  "loader": "objmodels:obj",
-  "model": "objmodels:stationapi/models/block/obj_ramp.obj",
-  "flip_v": true,
-  "textures": {
-    "particle": "objmodels:block/obj_ramp",
-    "ramp": "objmodels:block/obj_ramp"
-  }
-}
