@@ -3,11 +3,11 @@
  * SPDX-License-Identifier: LGPL-2.1-only
  *
  * Ported from NeoForge 1.21.1 (net.neoforged.neoforge.client.model.obj.ObjTokenizer)
- * for ObjModelsBabric on Babric b1.7.3. Changes: removed Guava/joptsimple dependencies,
+ * for Betafront on Babric b1.7.3. Changes: removed Guava/joptsimple dependencies,
  * trims surrounding whitespace, tracks line numbers for error messages.
  */
 
-package io.github.davevermeulen.objmodelsbabric.obj;
+package io.github.davevermeulen.betafront.obj;
 
 
 import java.io.BufferedReader;

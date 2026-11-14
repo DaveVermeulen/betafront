@@ -1,7 +1,7 @@
-package io.github.davevermeulen.objmodelsbabric.obj;
+package io.github.davevermeulen.betafront.obj;
 
 /**
- * Options read from an {@code "loader": "objmodelsbabric:obj"} model JSON. Names and defaults follow
+ * Options read from an {@code "loader": "betafront:obj"} model JSON. Names and defaults follow
  * NeoForge's {@code neoforge:obj} loader so its model JSONs work with few edits.
  *
  * @param modelLocation     "namespace:path" of the .obj file, relative to the namespace root

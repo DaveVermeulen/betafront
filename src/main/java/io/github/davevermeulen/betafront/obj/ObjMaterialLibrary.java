@@ -3,11 +3,11 @@
  * SPDX-License-Identifier: LGPL-2.1-only
  *
  * Ported from NeoForge 1.21.1 (net.neoforged.neoforge.client.model.obj.ObjMaterialLibrary)
- * for ObjModelsBabric on Babric b1.7.3. Changes: JOML vectors replaced by float[4], Guava removed,
- * "objmodelsbabric_TintIndex" accepted next to the Forge/NeoForge spellings.
+ * for Betafront on Babric b1.7.3. Changes: JOML vectors replaced by float[4], Guava removed,
+ * "betafront_TintIndex" accepted next to the Forge/NeoForge spellings.
  */
 
-package io.github.davevermeulen.objmodelsbabric.obj;
+package io.github.davevermeulen.betafront.obj;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -55,7 +55,7 @@ public class ObjMaterialLibrary {
 
                 case "forge_TintIndex":
                 case "neoforge_TintIndex":
-                case "objmodelsbabric_TintIndex":
+                case "betafront_TintIndex":
                     currentMaterial.diffuseTintIndex = Integer.parseInt(line[1]);
                     break;
 

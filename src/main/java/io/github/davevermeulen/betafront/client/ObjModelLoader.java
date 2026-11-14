@@ -1,14 +1,14 @@
-package io.github.davevermeulen.objmodelsbabric.client;
+package io.github.davevermeulen.betafront.client;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
-import io.github.davevermeulen.objmodelsbabric.ObjModelsBabric;
-import io.github.davevermeulen.objmodelsbabric.obj.ObjGeometry;
-import io.github.davevermeulen.objmodelsbabric.obj.ObjMaterialLibrary;
-import io.github.davevermeulen.objmodelsbabric.obj.ObjSettings;
-import io.github.davevermeulen.objmodelsbabric.obj.ObjTokenizer;
+import io.github.davevermeulen.betafront.Betafront;
+import io.github.davevermeulen.betafront.obj.ObjGeometry;
+import io.github.davevermeulen.betafront.obj.ObjMaterialLibrary;
+import io.github.davevermeulen.betafront.obj.ObjSettings;
+import io.github.davevermeulen.betafront.obj.ObjTokenizer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.modificationstation.stationapi.api.client.render.model.ModelIdentifier;
@@ -32,7 +32,7 @@ import java.util.Set;
 @Environment(EnvType.CLIENT)
 public final class ObjModelLoader {
     /** Loader ids accepted in the model JSON's "loader" key. */
-    public static final Set<String> LOADER_IDS = Set.of(ObjModelsBabric.NAMESPACE + ":obj", "neoforge:obj", "forge:obj");
+    public static final Set<String> LOADER_IDS = Set.of(Betafront.NAMESPACE + ":obj", "neoforge:obj", "forge:obj");
 
     private ObjModelLoader() {}
 

@@ -13,4 +13,4 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'objmodelsbabric'
+rootProject.name = 'betafront'

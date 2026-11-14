@@ -9,11 +9,11 @@
  * use the model's "#default" or "#particle" texture.
  */
 
-package io.github.davevermeulen.objmodelsbabric.client;
+package io.github.davevermeulen.betafront.client;
 
 import com.mojang.datafixers.util.Pair;
-import io.github.davevermeulen.objmodelsbabric.obj.ObjGeometry;
-import io.github.davevermeulen.objmodelsbabric.obj.ObjMaterialLibrary;
+import io.github.davevermeulen.betafront.obj.ObjGeometry;
+import io.github.davevermeulen.betafront.obj.ObjMaterialLibrary;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.modificationstation.stationapi.api.client.render.model.BakedModel;
