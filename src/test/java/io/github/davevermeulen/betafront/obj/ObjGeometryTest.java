@@ -1,4 +1,4 @@
-package io.github.davevermeulen.objmodelsbabric.obj;
+package io.github.davevermeulen.betafront.obj;
 
 import org.junit.jupiter.api.Test;
 
@@ -174,9 +174,9 @@ class ObjGeometryTest {
 
     @Test
     void shippedRampModelParsesAndCullsItsOuterFaces() throws IOException {
-        var settings = new ObjSettings("objmodelsbabric:assets/objmodelsbabric/stationapi/models/block/obj_ramp.obj", true, true, true, true, null, true);
+        var settings = new ObjSettings("betafront:assets/betafront/stationapi/models/block/obj_ramp.obj", true, true, true, true, null, true);
         ObjGeometry ramp = parse(settings);
-        assertEquals(List.of("objmodelsbabric:assets/objmodelsbabric/stationapi/models/block/obj_ramp.mtl"), loadedLibraries);
+        assertEquals(List.of("betafront:assets/betafront/stationapi/models/block/obj_ramp.mtl"), loadedLibraries);
 
         var mesh = ramp.allMeshes().get(0);
         assertEquals("#ramp", mesh.mat.diffuseColorMap);
@@ -191,7 +191,7 @@ class ObjGeometryTest {
 
     @Test
     void blenderCrystalWithMissingMtlUsesHashTextureMaterial() throws IOException {
-        var settings = new ObjSettings("objmodelsbabric:assets/objmodelsbabric/stationapi/models/block/tryrolite_crystal.obj", true, true, true, true, null, true);
+        var settings = new ObjSettings("betafront:assets/betafront/stationapi/models/block/tryrolite_crystal.obj", true, true, true, true, null, true);
         ObjGeometry crystal = parse(settings);
 
         var meshes = crystal.allMeshes();

@@ -1,4 +1,4 @@
-# ObjModelsBabric test ramp: full-height at the north edge (z = 0), floor height at the south edge (z = 1).
+# Betafront test ramp: full-height at the north edge (z = 0), floor height at the south edge (z = 1).
 # Bottom, back and slope are quads; the two sides are triangles.
 mtllib obj_ramp.mtl
 o Ramp

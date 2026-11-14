@@ -1,0 +1,9 @@
+{
+  "loader": "betafront:obj",
+  "model": "betafront:stationapi/models/block/tryrolite_crystal.obj",
+  "flip_v": true,
+  "textures": {
+    "particle": "betafront:block/tryrolite_crystal",
+    "texture0": "betafront:block/tryrolite_crystal"
+  }
+}

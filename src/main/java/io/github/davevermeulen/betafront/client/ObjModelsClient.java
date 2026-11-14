@@ -1,7 +1,7 @@
-package io.github.davevermeulen.objmodelsbabric.client;
+package io.github.davevermeulen.betafront.client;
 
 import com.google.gson.JsonObject;
-import io.github.davevermeulen.objmodelsbabric.ObjModelsBabric;
+import io.github.davevermeulen.betafront.Betafront;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.mine_diver.unsafeevents.listener.EventListener;
@@ -12,7 +12,7 @@ import java.io.IOException;
 
 /**
  * Hooks the OBJ loader into StationAPI: for every model StationAPI is about to load, a model JSON
- * with {@code "loader": "objmodelsbabric:obj"} is loaded by us instead of by the JSON loader.
+ * with {@code "loader": "betafront:obj"} is loaded by us instead of by the JSON loader.
  */
 @Environment(EnvType.CLIENT)
 public class ObjModelsClient {
@@ -23,7 +23,7 @@ public class ObjModelsClient {
         try {
             json = ObjModelLoader.findObjModelJson(modelId);
         } catch (IOException e) {
-            ObjModelsBabric.LOGGER.warn("Could not read model JSON {}", modelId, e);
+            Betafront.LOGGER.warn("Could not read model JSON {}", modelId, e);
             return;
         }
         if (json == null)
@@ -33,7 +33,7 @@ public class ObjModelsClient {
             try {
                 return ObjModelLoader.load(id, json);
             } catch (IOException | RuntimeException e) {
-                ObjModelsBabric.LOGGER.error("Failed to load OBJ model {}: {}", id, e.getMessage());
+                Betafront.LOGGER.error("Failed to load OBJ model {}: {}", id, e.getMessage());
                 throw e instanceof IOException io ? io : new IOException(e);
             }
         };

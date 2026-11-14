@@ -1,6 +1,6 @@
-package io.github.davevermeulen.objmodelsbabric.example;
+package io.github.davevermeulen.betafront.example;
 
-import io.github.davevermeulen.objmodelsbabric.ObjModelsBabric;
+import io.github.davevermeulen.betafront.Betafront;
 import net.fabricmc.loader.api.FabricLoader;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.block.Block;
@@ -31,10 +31,10 @@ public class ExampleContent {
     public void registerBlocks(BlockRegistryEvent event) {
         if (!FabricLoader.getInstance().isDevelopmentEnvironment())
             return;
-        Namespace namespace = Namespace.of(ObjModelsBabric.NAMESPACE);
+        Namespace namespace = Namespace.of(Betafront.NAMESPACE);
         tryroliteCrystal = new CrystalBlock(namespace.id("tryrolite_crystal"));
         objRamp = new RampBlock(namespace.id("obj_ramp"));
-        ObjModelsBabric.LOGGER.info("Registered the ObjModelsBabric test blocks tryrolite_crystal and obj_ramp");
+        Betafront.LOGGER.info("Registered the Betafront test blocks tryrolite_crystal and obj_ramp");
     }
 
     /** A non-cube block: neighbours stay visible through it. */
