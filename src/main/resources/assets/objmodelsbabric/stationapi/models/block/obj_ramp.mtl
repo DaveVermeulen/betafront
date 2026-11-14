@@ -1,0 +1,4 @@
+# Material for the ObjModelsBabric test ramp
+newmtl ramp
+Kd 1 1 1
+map_Kd #ramp

@@ -1,8 +1,0 @@
-{
-  "variants": {
-    "facing=north": { "model": "objmodels:block/obj_ramp" },
-    "facing=east":  { "model": "objmodels:block/obj_ramp", "y": 90 },
-    "facing=south": { "model": "objmodels:block/obj_ramp", "y": 180 },
-    "facing=west":  { "model": "objmodels:block/obj_ramp", "y": 270 }
-  }
-}

@@ -1,27 +1,30 @@
 {
   "schemaVersion": 1,
-  "id": "objmodels",
+  "id": "objmodelsbabric",
   "version": "${version}",
 
-  "name": "OBJ Models",
-  "description": "Wavefront OBJ block and item models for StationAPI. Point a model JSON at an .obj file with \"loader\": \"objmodels:obj\".",
+  "name": "ObjModelsBabric",
+  "description": "Wavefront OBJ block and item models for StationAPI. Point a model JSON at an .obj file with \"loader\": \"objmodelsbabric:obj\".",
   "authors": [
     "Dave"
   ],
   "contributors": [
     "OBJ parsing adapted from NeoForge (Forge Development LLC and contributors)"
   ],
-  "contact": {},
+  "contact": {
+    "sources": "https://github.com/DaveVermeulen/objmodelsbabric",
+    "issues": "https://github.com/DaveVermeulen/objmodelsbabric/issues"
+  },
 
   "license": "LGPL-2.1-only",
 
   "environment": "*",
   "entrypoints": {
     "stationapi:event_bus": [
-      "io.github.davevermeulen.objmodels.example.ExampleContent"
+      "io.github.davevermeulen.objmodelsbabric.example.ExampleContent"
     ],
     "stationapi:event_bus_client": [
-      "io.github.davevermeulen.objmodels.client.ObjModelsClient"
+      "io.github.davevermeulen.objmodelsbabric.client.ObjModelsClient"
     ]
   },
 

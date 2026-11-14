@@ -1,0 +1,9 @@
+{
+  "loader": "objmodelsbabric:obj",
+  "model": "objmodelsbabric:stationapi/models/block/obj_ramp.obj",
+  "flip_v": true,
+  "textures": {
+    "particle": "objmodelsbabric:block/obj_ramp",
+    "ramp": "objmodelsbabric:block/obj_ramp"
+  }
+}

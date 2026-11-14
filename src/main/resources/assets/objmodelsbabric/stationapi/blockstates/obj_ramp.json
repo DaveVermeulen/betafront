@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "objmodelsbabric:block/obj_ramp" },
+    "facing=east":  { "model": "objmodelsbabric:block/obj_ramp", "y": 90 },
+    "facing=south": { "model": "objmodelsbabric:block/obj_ramp", "y": 180 },
+    "facing=west":  { "model": "objmodelsbabric:block/obj_ramp", "y": 270 }
+  }
+}
