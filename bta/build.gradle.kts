@@ -23,6 +23,11 @@ loom {
 	val btaChannel = libs.versions.btaChannel.get()
 	val btaVersion = (if (btaChannel == "nightly") "" else "v") + libs.versions.bta.get()
     customMinecraftMetadata.set("https://downloads.betterthanadventure.net/bta-client/${btaChannel}/$btaVersion/manifest.json")
+
+	// BTA uses LWJGL 3 (GLFW), which on macOS must run on the JVM's first thread
+	if (System.getProperty("os.name").startsWith("Mac")) {
+		runs.configureEach { vmArg("-XstartOnFirstThread") }
+	}
 }
 repositories {
     mavenCentral()
