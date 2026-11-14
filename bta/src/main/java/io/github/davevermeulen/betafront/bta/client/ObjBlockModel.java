@@ -3,16 +3,19 @@ package io.github.davevermeulen.betafront.bta.client;
 import io.github.davevermeulen.betafront.obj.ObjGeometry;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.render.LightmapHelper;
 import net.minecraft.client.render.block.model.BlockModelStandard;
-import net.minecraft.client.render.tessellator.Tessellator;
+import net.minecraft.client.render.tessellator.TessellatorGeneral;
 import net.minecraft.client.render.texture.stitcher.IconCoordinate;
 import net.minecraft.client.render.texture.stitcher.TextureRegistry;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.block.BlockLogic;
+import net.minecraft.core.util.helper.LightIndexHelper;
 import net.minecraft.core.util.helper.Side;
 import net.minecraft.core.world.WorldSource;
-import org.lwjgl.opengl.GL11;
+import net.minecraft.core.world.pos.TilePos;
+import net.minecraft.core.world.pos.TilePosc;
+import org.joml.primitives.AABBd;
+import org.joml.primitives.AABBdc;
 
 import java.util.List;
 import java.util.function.IntUnaryOperator;
@@ -22,9 +25,6 @@ import java.util.function.IntUnaryOperator;
  */
 @Environment(EnvType.CLIENT)
 public class ObjBlockModel<T extends BlockLogic> extends BlockModelStandard<T> {
-    /** Vanilla face shading by direction, indexed by {@link ObjGeometry.Side}: down, up, north, south, west, east. */
-    private static final float[] SHADE = {0.5f, 1.0f, 0.8f, 0.8f, 0.6f, 0.6f};
-
     protected final ObjModelDefinition definition;
     protected final IntUnaryOperator yRotation;
 
@@ -35,36 +35,43 @@ public class ObjBlockModel<T extends BlockLogic> extends BlockModelStandard<T> {
     }
 
     @Override
-    public boolean render(Tessellator tessellator, WorldSource world, int x, int y, int z) {
-        int meta = world.getBlockMetadata(x, y, z);
+    public boolean render(TessellatorGeneral tessellator, WorldSource world, TilePosc tilePos) {
+        int x = tilePos.x(), y = tilePos.y(), z = tilePos.z();
+        int meta = world.getBlockData(tilePos);
+        TilePos lightPos = new TilePos();
         boolean drewAnything = false;
         for (ObjModelDefinition.Quad quad : definition.quads(yRotation.applyAsInt(meta))) {
             Side cull = toSide(quad.cullSide());
-            if (cull != null && !isFaceVisible(world, x, y, z, cull, meta))
+            if (cull != null && !isFaceVisible(world, tilePos, cull, meta))
                 continue;
             IconCoordinate icon = icon(quad.texture());
             if (icon == null)
                 continue;
 
-            // light the quad from the block it faces, like vanilla does for full faces
-            Side facing = toSide(quad.lightSide());
-            int lx = x, ly = y, lz = z;
-            if (cull != null) {
-                lx += facing.getOffsetX();
-                ly += facing.getOffsetY();
-                lz += facing.getOffsetZ();
+            // Faces flat against the block edge take their light from the neighbour they face, like
+            // vanilla full faces; everything else uses the light at the block itself.
+            if (cull != null)
+                tilePos.add(cull, lightPos);
+            else
+                lightPos.set(x, y, z);
+            byte lightIndex = block.getLightIndex(world, lightPos);
+            float brightness = renderBlocks.getBlockBrightness(world, lightPos);
+            if (quad.emission() > 0f) {
+                int emitted = Math.round(quad.emission() * 15f);
+                if (emitted > LightIndexHelper.blockLightFromIndex(lightIndex))
+                    lightIndex = LightIndexHelper.setBlockLight(lightIndex, emitted);
+                brightness = Math.max(brightness, quad.emission());
             }
-            float shade = quad.shade() ? SHADE[quad.lightSide().ordinal()] : 1f;
-            if (LightmapHelper.isLightmapEnabled()) {
-                int lightmap = block.getLightmapCoord(world, lx, ly, lz);
-                if (quad.emission() > 0f)
-                    lightmap = LightmapHelper.setBlocklightValue(lightmap, Math.round(quad.emission() * 15f));
-                tessellator.setLightmapCoord(lightmap);
-                tessellator.setColorOpaque_F(shade, shade, shade);
-            } else {
-                float brightness = Math.max(block.getBlockBrightness(world, lx, ly, lz), quad.emission());
-                tessellator.setColorOpaque_F(brightness * shade, brightness * shade, brightness * shade);
-            }
+
+            // BTA shades faces by direction from the vertex normal; a quad with shading turned off
+            // gets an upward normal, which BTA leaves at full brightness.
+            if (quad.shade())
+                tessellator.setNormal(quad.normal()[0], quad.normal()[1], quad.normal()[2]);
+            else
+                tessellator.setNormal(0f, 1f, 0f);
+            tessellator.setLightmapCoord1i(lightIndex);
+            tessellator.setShade1i((int) (Math.min(brightness, 1f) * 255f));
+            tessellator.setColorOpaque3f(1f, 1f, 1f);
 
             float[][] pos = quad.positions();
             float[][] uv = quad.uvs();
@@ -76,19 +83,25 @@ public class ObjBlockModel<T extends BlockLogic> extends BlockModelStandard<T> {
         return drewAnything;
     }
 
+    /** Draws the model as an item (inventory, hand, dropped), the same way BlockModelStandard draws a cube. */
     @Override
-    public void renderStandalone(Tessellator tessellator, int meta, float brightness, float alpha, Integer lightmapCoordinate) {
-        GL11.glTranslatef(-0.5f, -0.5f, -0.5f);
+    public void renderStandalone(TessellatorGeneral tessellator, int meta, byte lightIndex) {
+        tessellator.offsetTranslation(-0.5, -0.5, -0.5);
         tessellator.startDrawingQuads();
-        if (lightmapCoordinate != null)
-            tessellator.setLightmapCoord(lightmapCoordinate);
+        tessellator.setColor1i(getStandaloneTintColor(meta));
         for (ObjModelDefinition.Quad quad : definition.quads(yRotation.applyAsInt(meta))) {
             IconCoordinate icon = icon(quad.texture());
             if (icon == null)
                 continue;
-            float shade = (quad.shade() ? SHADE[quad.lightSide().ordinal()] : 1f) * Math.max(brightness, quad.emission());
-            tessellator.setColorRGBA_F(shade, shade, shade, alpha);
-            tessellator.setNormal(quad.normal()[0], quad.normal()[1], quad.normal()[2]);
+            byte quadLight = lightIndex;
+            int emitted = Math.round(quad.emission() * 15f);
+            if (emitted > LightIndexHelper.blockLightFromIndex(quadLight))
+                quadLight = LightIndexHelper.setBlockLight(quadLight, emitted);
+            tessellator.setLightmapCoord1i(quadLight);
+            if (quad.shade())
+                tessellator.setNormal(quad.normal()[0], quad.normal()[1], quad.normal()[2]);
+            else
+                tessellator.setNormal(0f, 1f, 0f);
             float[][] pos = quad.positions();
             float[][] uv = quad.uvs();
             for (int i = 0; i < 4; i++)
@@ -96,7 +109,7 @@ public class ObjBlockModel<T extends BlockLogic> extends BlockModelStandard<T> {
                         icon.getSubIconU(uv[i][0]), icon.getSubIconV(uv[i][1]));
         }
         tessellator.draw();
-        GL11.glTranslatef(0.5f, 0.5f, 0.5f);
+        tessellator.offsetTranslation(0.5, 0.5, 0.5);
     }
 
     @Override
@@ -110,18 +123,30 @@ public class ObjBlockModel<T extends BlockLogic> extends BlockModelStandard<T> {
         return icon != null ? icon : super.getParticleTexture(side, meta);
     }
 
+    private static final AABBdc FULL_BLOCK = new AABBd(0, 0, 0, 1, 1, 1);
+
     /** True when the neighbour on this side doesn't hide a face lying flat against it. */
-    protected boolean isFaceVisible(WorldSource world, int x, int y, int z, Side side, int meta) {
-        return block.getLogic().shouldSideBeRendered(world,
-                x + side.getOffsetX(), y + side.getOffsetY(), z + side.getOffsetZ(), side, meta);
+    protected boolean isFaceVisible(WorldSource world, TilePosc tilePos, Side side, int meta) {
+        return shouldSideBeRendered(world, FULL_BLOCK, tilePos.add(side, new TilePos()), side, meta);
     }
 
     /** The atlas entry for a texture id such as {@code mymod:block/lamp}, falling back to the particle texture. */
     protected IconCoordinate icon(String texture) {
-        IconCoordinate icon = texture != null ? TextureRegistry.getTexture(texture) : null;
+        IconCoordinate icon = lookUp(texture);
         if (icon == null && definition.particleTexture != null && !definition.particleTexture.equals(texture))
-            icon = TextureRegistry.getTexture(definition.particleTexture);
+            icon = lookUp(definition.particleTexture);
         return icon;
+    }
+
+    /** TextureRegistry throws for an id that names no atlas (e.g. one without a "block/" folder). */
+    private static IconCoordinate lookUp(String texture) {
+        if (texture == null)
+            return null;
+        try {
+            return TextureRegistry.getTexture(texture);
+        } catch (RuntimeException e) {
+            return null;
+        }
     }
 
     protected static Side toSide(ObjGeometry.Side side) {

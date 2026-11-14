@@ -6,11 +6,12 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.block.BlockLogic;
-import net.minecraft.core.block.material.Material;
+import net.minecraft.core.block.material.Materials;
 import net.minecraft.core.entity.Mob;
 import net.minecraft.core.util.helper.MathHelper;
 import net.minecraft.core.util.helper.Side;
 import net.minecraft.core.world.World;
+import net.minecraft.core.world.pos.TilePosc;
 import turniplabs.halplibe.helper.BlockBuilder;
 
 /**
@@ -43,7 +44,7 @@ public final class ExampleContent {
     /** OBJ blocks aren't full cubes, so they must not hide their neighbours' faces. */
     public static class CrystalLogic extends BlockLogic {
         public CrystalLogic(Block<?> block) {
-            super(block, Material.glass);
+            super(block, Materials.GLASS);
         }
 
         @Override
@@ -59,7 +60,7 @@ public final class ExampleContent {
 
     public static class RampLogic extends BlockLogic {
         public RampLogic(Block<?> block) {
-            super(block, Material.stone);
+            super(block, Materials.STONE);
         }
 
         @Override
@@ -73,9 +74,9 @@ public final class ExampleContent {
         }
 
         @Override
-        public void onBlockPlacedByMob(World world, int x, int y, int z, Side side, Mob mob, double xHit, double yHit) {
+        public void onPlacedByMob(World world, TilePosc tilePos, Side side, Mob mob, double xHit, double yHit) {
             int facing = MathHelper.floor(mob.yRot * 4.0f / 360.0f + 0.5) & 3;
-            world.setBlockMetadataWithNotify(x, y, z, facing);
+            world.setBlockDataNotify(tilePos, facing);
         }
     }
 }
