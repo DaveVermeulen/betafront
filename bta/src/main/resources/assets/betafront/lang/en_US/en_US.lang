@@ -1,0 +1,4 @@
+tile.betafront.example.crystal.name=Example Crystal
+tile.betafront.example.crystal.desc=An OBJ model exported from Blender.
+tile.betafront.obj.ramp.name=OBJ Test Ramp
+tile.betafront.obj.ramp.desc=Turns to face you, to test rotations and culling.

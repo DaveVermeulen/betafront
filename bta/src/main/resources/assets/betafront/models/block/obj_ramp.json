@@ -1,0 +1,9 @@
+{
+  "loader": "betafront:obj",
+  "model": "betafront:models/block/obj_ramp.obj",
+  "flip_v": true,
+  "textures": {
+    "particle": "betafront:block/obj_ramp",
+    "ramp": "betafront:block/obj_ramp"
+  }
+}

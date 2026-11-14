@@ -1,0 +1,36 @@
+{
+	"schemaVersion": 1,
+	"id": "betafront",
+	"version": "${version}",
+	"name": "Betafront",
+	"description": "Wavefront OBJ block models for Better Than Adventure, using the same model JSON as NeoForge's OBJ loader.",
+	"authors": [
+		"Dave"
+	],
+	"contributors": [
+		"OBJ parsing adapted from NeoForge (Forge Development LLC and contributors)"
+	],
+	"contact": {
+		"sources": "https://github.com/DaveVermeulen/betafront",
+		"issues": "https://github.com/DaveVermeulen/betafront/issues"
+	},
+	"license": "LGPL-2.1-only",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"io.github.davevermeulen.betafront.bta.Betafront"
+		],
+		"client": [
+			"io.github.davevermeulen.betafront.bta.client.BetafrontClient"
+		]
+	},
+	"depends": {
+		"fabricloader": ">=${fabricloader}",
+		"minecraft": "*",
+		"halplibe": ">=${halplibe}",
+		"java": ">=${java}"
+	},
+	"suggests": {
+		"modmenu": ">=${modmenu}"
+	}
+}
