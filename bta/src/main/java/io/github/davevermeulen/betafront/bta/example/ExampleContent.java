@@ -13,6 +13,8 @@ import net.minecraft.core.util.helper.Side;
 import net.minecraft.core.world.World;
 import net.minecraft.core.world.pos.TilePosc;
 import turniplabs.halplibe.helper.BlockBuilder;
+import turniplabs.halplibe.helper.creativeInventory.CreativeInventoryCategory;
+import turniplabs.halplibe.helper.creativeInventory.CreativeInventoryPlacement;
 
 /**
  * Test blocks for the development client (./gradlew -p bta runClient). Not registered in a normal game.
@@ -30,7 +32,10 @@ public final class ExampleContent {
     private ExampleContent() {}
 
     public static void registerBlocks() {
-        BlockBuilder builder = new BlockBuilder(Betafront.MOD_ID).setHardness(1.0f);
+        BlockBuilder builder = new BlockBuilder(Betafront.MOD_ID)
+                .setHardness(1.0f)
+                // BTA's creative menu only lists blocks that are given a placement
+                .setCreativeInventoryPlacement(new CreativeInventoryPlacement.Category(CreativeInventoryCategory.MISCELLANEOUS));
         exampleCrystal = builder.setLuminance(7).build("example_crystal", FIRST_ID, CrystalLogic::new);
         objRamp = builder.build("obj_ramp", FIRST_ID + 1, RampLogic::new);
     }
