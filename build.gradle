@@ -27,3 +27,9 @@ tasks.register('buildAll') {
     description = 'Runs the parser tests and builds both mod jars.'
     dependsOn included('core', ':test'), included('stationapi', ':build'), included('bta', ':build')
 }
+
+tasks.register('cleanAll') {
+    group = 'betafront'
+    description = 'Deletes the build output of all three builds.'
+    dependsOn included('core', ':clean'), included('stationapi', ':clean'), included('bta', ':clean')
+}
