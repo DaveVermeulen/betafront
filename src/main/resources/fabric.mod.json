@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "objmodels",
+  "version": "${version}",
+
+  "name": "OBJ Models",
+  "description": "Wavefront OBJ block and item models for StationAPI. Point a model JSON at an .obj file with \"loader\": \"objmodels:obj\".",
+  "authors": [
+    "Dave"
+  ],
+  "contributors": [
+    "OBJ parsing adapted from NeoForge (Forge Development LLC and contributors)"
+  ],
+  "contact": {},
+
+  "license": "LGPL-2.1-only",
+
+  "environment": "*",
+  "entrypoints": {
+    "stationapi:event_bus": [
+      "io.github.davevermeulen.objmodels.example.ExampleContent"
+    ],
+    "stationapi:event_bus_client": [
+      "io.github.davevermeulen.objmodels.client.ObjModelsClient"
+    ]
+  },
+
+  "depends": {
+    "minecraft": "1.0.0-beta.7.3",
+    "fabricloader": ">=${loader_version}",
+    "stationapi": ">=${stationapi_version}"
+  }
+}
