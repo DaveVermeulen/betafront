@@ -21,10 +21,10 @@ To build it:
 
 | Dependency | Version |
 | --- | --- |
-| JDK | 17 or newer |
+| JDK to run Gradle | 21 or newer (the mod itself is compiled for Java 17 through the toolchain, so a JDK 17 must also be installed or downloadable) |
 | Gradle | 9.5.1 (wrapper included) |
 | fabric-loom | 1.17.20 |
-| babric-loom-extension | 1.17.4 |
+| babric-loom-extension | 1.17.5 (1.17.4 fails with an UnsupportedOperationException) |
 | biny mappings | b1.7.3+e1fe071 |
 | JUnit Jupiter (tests only) | 5.10.2 |
 
