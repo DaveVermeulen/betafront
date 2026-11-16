@@ -24,26 +24,27 @@ Rough steps:
 **Goal:** a modder adds a repository and one dependency line:
 
 ```kotlin
-repositories { maven("https://jitpack.io") }
-dependencies { implementation("com.github.DaveVermeulen:betafront:bta-v0.1.0-alpha.1") }
+repositories { maven("https://davevermeulen.github.io/betafront/maven") }
+dependencies { implementation("io.github.davevermeulen:betafront-bta:0.1.0-alpha.1+8.0.1") }
 ```
 
-Options:
+**Plan: our own Maven on GitHub Pages, published by GitHub Actions.** A Maven repository is just a folder of jars and small metadata files served over HTTPS, so GitHub Pages can host it for free. Users need no login and no third-party build, and every version is the exact jar we built and tested.
+
+Rough steps:
+
+1. Add `maven-publish` to `bta/` and `stationapi/` with clear coordinates: `io.github.davevermeulen:betafront-bta` and `io.github.davevermeulen:betafront-stationapi`, with sources jars and the dependencies (HalpLibe or StationAPI) in the POM.
+2. Add a GitHub Actions workflow that runs when a release tag is pushed (`bta-v*` or `stationapi-v*`): build with JDK 21, run the core tests, publish that build into a local folder, then commit the folder to a `gh-pages` branch under `maven/`. Existing versions are never overwritten.
+3. The same workflow attaches the jars to the GitHub release, so making a release becomes: bump the version, push a tag.
+4. Turn on GitHub Pages for the `gh-pages` branch (repository settings, one time).
+5. Add a "Using Betafront as a dependency" section to the README with the snippet above, for both BTA and StationAPI.
+
+Other options, if the plan runs into trouble:
 
 | Option | Good | Not so good |
 | --- | --- | --- |
-| **JitPack** (recommended) | Builds straight from a GitHub tag, nothing to host or upload, free for public repos | The first request for a version triggers a build on JitPack's servers, which can be slow or fail; it has to download BTA and the Babric toolchain itself. DragonFly moved away from it after build problems, so test it early |
-| Signalum Maven (where HalpLibe and BTA's loader live) | Where BTA modders already look; a plain Maven with prebuilt jars | Needs publish access from its maintainers; BTA only |
-| A Maven folder on GitHub Pages | Prebuilt jars, no third party, no auth for users | We publish each release ourselves (a Gradle task or a GitHub Actions workflow) |
+| JitPack | Builds straight from a GitHub tag, nothing to set up | The first request for a version builds on JitPack's servers, which can be slow or fail; DragonFly moved away from it after build problems |
+| Signalum Maven (where HalpLibe and BTA's loader live) | Where BTA modders already look | Needs publish access from its maintainers; BTA only |
 | GitHub Packages | Free, tied to the repo | Everyone who depends on it needs a GitHub token, even for public packages |
-
-Rough steps (JitPack):
-
-1. Add `maven-publish` to `bta/` and `stationapi/` with clear artifact names (`betafront-bta`, `betafront-stationapi`), including the sources jars.
-2. Add a root `publishToMavenLocal` task that runs both, since JitPack runs that in the repository root, and a `jitpack.yml` that picks JDK 21 to run Gradle.
-3. Push a tag, then request it on jitpack.io and read the build log. Fix whatever its build machine trips over (BTA's download servers, memory).
-4. Add a "Using Betafront as a dependency" section to the README with the snippet above, for both BTA and StationAPI.
-5. If JitPack builds turn out unreliable, publish the same artifacts to a Maven folder on GitHub Pages instead. Later, ask the Signalum maintainers about publishing the BTA build there too.
 
 ## 3. Small performance wins (BTA)
 
