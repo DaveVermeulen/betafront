@@ -11,6 +11,8 @@ Wavefront `.obj` block models for Minecraft Beta mods. Betafront comes in two bu
 
 Both read the same model JSON as NeoForge's `neoforge:obj` loader, so models made for modern NeoForge carry over with few edits.
 
+**New here?** The [documentation](docs/README.md) covers installing, adding a model step by step, a worked example and known limitations.
+
 > **AI disclaimer:** most of this mod's code and documentation was written with the help of Claude, an AI assistant by Anthropic, and reviewed by the author. The OBJ parsing code is adapted from NeoForge (see [Licence](#licence)). Please report anything that looks wrong as an issue.
 
 ## Repository layout
