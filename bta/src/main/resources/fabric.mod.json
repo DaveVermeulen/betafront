@@ -14,6 +14,7 @@
 		"sources": "https://github.com/DaveVermeulen/betafront",
 		"issues": "https://github.com/DaveVermeulen/betafront/issues"
 	},
+	"icon": "assets/betafront/icon.png",
 	"license": "LGPL-2.1-only",
 	"environment": "*",
 	"entrypoints": {

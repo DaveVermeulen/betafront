@@ -1,3 +1,5 @@
+<img src="docs/icon.png" alt="Betafront icon" width="128" align="right">
+
 # Betafront
 
 Wavefront `.obj` block models for Minecraft Beta mods. Betafront comes in two builds that share one OBJ parser:
