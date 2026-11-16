@@ -172,7 +172,7 @@ Run these from the repository root:
 
 ## Roadmap
 
-Next up are smooth lighting for OBJ faces and publishing to a Maven repository. See [ROADMAP.md](ROADMAP.md).
+Next up are smooth lighting for OBJ faces, publishing to a Maven repository, and a few small performance wins. See [ROADMAP.md](ROADMAP.md).
 
 ## Licence
 

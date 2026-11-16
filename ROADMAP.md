@@ -44,3 +44,12 @@ Rough steps (Modrinth):
 3. Optionally a GitHub Actions workflow that builds and publishes when a `bta-v*` or `stationapi-v*` tag is pushed, so a release is one tag.
 4. Add a "Using Betafront as a dependency" section to the README with the snippet above.
 5. Later, ask the Signalum maintainers about publishing there too, since BTA modders already use it for HalpLibe.
+
+## 3. Small performance wins (BTA)
+
+The expensive work already happens once: OBJ files are parsed and turned into quads when models load, and each rotation is cached. Blocks are drawn only when their chunk is rebuilt, not every frame. The StationAPI build bakes everything into StationAPI's own quads, so there's nothing to gain there. What's left is cheap per quad but repeated for every quad, so it adds up for detailed models:
+
+1. **Cache texture lookups.** Every quad looks its texture up in the atlas again, on every chunk rebuild and, for items, every frame. A missing texture is even worse: each lookup throws and catches an exception. Look each texture up once per model and refresh when the atlas is rebuilt.
+2. **Look up light and neighbours once per side, not per quad.** A block has at most 7 light values that matter (its own and its 6 neighbours) and 6 neighbour visibility checks, but today a 45-face crystal does 45 light lookups and allocates a position object for each culled face. Compute those 13 values once per block and reuse them.
+3. **Flatter quad data.** Store each rotation's quads as one `float[]` instead of nested arrays, so a rebuild walks memory in order. Small win; do it together with smooth lighting, which reworks this code anyway.
+4. **Warn about very detailed models.** Log a warning when a model has more than a few hundred quads. There's no level-of-detail in Beta, so a 5,000-face model makes every chunk it's in slow to rebuild.
