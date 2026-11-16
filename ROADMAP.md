@@ -24,26 +24,26 @@ Rough steps:
 **Goal:** a modder adds a repository and one dependency line:
 
 ```kotlin
-repositories { maven("https://api.modrinth.com/maven") }
-dependencies { implementation("maven.modrinth:betafront:0.1.0-alpha.1+8.0.1") }
+repositories { maven("https://jitpack.io") }
+dependencies { implementation("com.github.DaveVermeulen:betafront:bta-v0.1.0-alpha.1") }
 ```
 
 Options:
 
 | Option | Good | Not so good |
 | --- | --- | --- |
-| **Modrinth Maven** (recommended first) | Every Modrinth upload is a Maven artifact automatically; the same upload is what players download; no server to run | Needs a Modrinth project and a short approval; artifact name is `maven.modrinth:betafront` |
-| Signalum Maven (where HalpLibe and BTA's loader live) | Where BTA modders already look | Needs publish access from its maintainers |
-| JitPack | No setup | It builds the repo itself and needs BTA's download servers; DragonFly moved away from it for build problems |
+| **JitPack** (recommended) | Builds straight from a GitHub tag, nothing to host or upload, free for public repos | The first request for a version triggers a build on JitPack's servers, which can be slow or fail; it has to download BTA and the Babric toolchain itself. DragonFly moved away from it after build problems, so test it early |
+| Signalum Maven (where HalpLibe and BTA's loader live) | Where BTA modders already look; a plain Maven with prebuilt jars | Needs publish access from its maintainers; BTA only |
+| A Maven folder on GitHub Pages | Prebuilt jars, no third party, no auth for users | We publish each release ourselves (a Gradle task or a GitHub Actions workflow) |
 | GitHub Packages | Free, tied to the repo | Everyone who depends on it needs a GitHub token, even for public packages |
 
-Rough steps (Modrinth):
+Rough steps (JitPack):
 
-1. Create the Modrinth project "Betafront" (icon, description, LGPL-2.1-only, links to this repo) with two versions per release: one for BTA and one for Babric/StationAPI.
-2. Add the `com.modrinth.minotaur` Gradle plugin to `bta/` and `stationapi/` so `./gradlew -p bta modrinth` uploads the jar (and its sources jar) with the right game version and the HalpLibe or StationAPI dependency. The upload token stays in an environment variable, never in the repo.
-3. Optionally a GitHub Actions workflow that builds and publishes when a `bta-v*` or `stationapi-v*` tag is pushed, so a release is one tag.
-4. Add a "Using Betafront as a dependency" section to the README with the snippet above.
-5. Later, ask the Signalum maintainers about publishing there too, since BTA modders already use it for HalpLibe.
+1. Add `maven-publish` to `bta/` and `stationapi/` with clear artifact names (`betafront-bta`, `betafront-stationapi`), including the sources jars.
+2. Add a root `publishToMavenLocal` task that runs both, since JitPack runs that in the repository root, and a `jitpack.yml` that picks JDK 21 to run Gradle.
+3. Push a tag, then request it on jitpack.io and read the build log. Fix whatever its build machine trips over (BTA's download servers, memory).
+4. Add a "Using Betafront as a dependency" section to the README with the snippet above, for both BTA and StationAPI.
+5. If JitPack builds turn out unreliable, publish the same artifacts to a Maven folder on GitHub Pages instead. Later, ask the Signalum maintainers about publishing the BTA build there too.
 
 ## 3. Small performance wins (BTA)
 
