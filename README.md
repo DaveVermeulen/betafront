@@ -170,6 +170,10 @@ Run these from the repository root:
 ./gradlew -p stationapi runClient # StationAPI dev client with the example blocks
 ```
 
+## Roadmap
+
+Next up are smooth lighting for OBJ faces and publishing to a Maven repository. See [ROADMAP.md](ROADMAP.md).
+
 ## Licence
 
 LGPL-2.1-only, see [LICENSE](LICENSE). The OBJ tokenizer, parser, material library and quad baking are adapted from [NeoForge](https://github.com/neoforged/NeoForge) 1.21.1 (Forge Development LLC and contributors, LGPL-2.1-only); those files keep their original headers and list the changes made.
