@@ -1,4 +1,6 @@
-<img src="docs/icon.png" alt="Betafront icon" width="128" align="right">
+<p align="center">
+  <img src="docs/icon.png" alt="Betafront icon" width="160">
+</p>
 
 # Betafront
 
