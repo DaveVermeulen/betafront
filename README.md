@@ -138,6 +138,8 @@ In the development clients both builds register two test blocks:
 
 They are not registered in a normal game.
 
+Getting them in game: in BTA they are in the creative inventory under Miscellaneous. Beta 1.7.3 has no creative mode or single-player commands, so the StationAPI dev client adds two crafting recipes instead: one dirt gives 4 example crystals, and one cobblestone gives 4 ramps.
+
 ## Building
 
 ### In IntelliJ IDEA

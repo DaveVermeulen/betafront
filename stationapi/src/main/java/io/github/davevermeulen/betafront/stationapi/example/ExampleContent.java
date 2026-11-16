@@ -6,10 +6,13 @@ import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.block.BlockState;
+import net.modificationstation.stationapi.api.event.recipe.RecipeRegisterEvent;
 import net.modificationstation.stationapi.api.event.registry.BlockRegistryEvent;
+import net.modificationstation.stationapi.api.recipe.CraftingRegistry;
 import net.modificationstation.stationapi.api.state.StateManager;
 import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
@@ -35,6 +38,20 @@ public class ExampleContent {
         exampleCrystal = new CrystalBlock(namespace.id("example_crystal"));
         objRamp = new RampBlock(namespace.id("obj_ramp"));
         Betafront.LOGGER.info("Registered the Betafront test blocks example_crystal and obj_ramp");
+    }
+
+    /**
+     * Beta has no creative inventory or commands in single player, so the test blocks are craftable
+     * in the development client: one dirt gives 4 crystals, one cobblestone gives 4 ramps.
+     */
+    @EventListener
+    public void registerRecipes(RecipeRegisterEvent event) {
+        if (exampleCrystal == null)
+            return;
+        if (RecipeRegisterEvent.Vanilla.fromType(event.recipeId) == RecipeRegisterEvent.Vanilla.CRAFTING_SHAPELESS) {
+            CraftingRegistry.addShapelessRecipe(new ItemStack(exampleCrystal, 4), new ItemStack(Block.DIRT));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(objRamp, 4), new ItemStack(Block.COBBLESTONE));
+        }
     }
 
     /** A non-cube block: neighbours stay visible through it. */
