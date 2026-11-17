@@ -55,11 +55,18 @@ public class ObjUnbakedModel implements UnbakedModel {
     private final ObjGeometry geometry;
     /** The JSON "textures" map: name to texture id or "#other". */
     private final Map<String, String> textures;
+    /** How the item is placed in the inventory, hand, on the ground, etc. (the JSON "display"). */
+    private final ModelTransformation display;
+    /** "gui_light": side-lit like a block (true) or front-lit like a flat item (false). */
+    private final boolean sideLit;
 
-    public ObjUnbakedModel(Identifier id, ObjGeometry geometry, Map<String, String> textures) {
+    public ObjUnbakedModel(Identifier id, ObjGeometry geometry, Map<String, String> textures,
+                           ModelTransformation display, boolean sideLit) {
         this.id = id;
         this.geometry = geometry;
         this.textures = Map.copyOf(textures);
+        this.display = display;
+        this.sideLit = sideLit;
     }
 
     @Override
@@ -83,7 +90,7 @@ public class ObjUnbakedModel implements UnbakedModel {
     @Override
     public BakedModel bake(Baker baker, Function<SpriteIdentifier, Sprite> textureGetter, ModelBakeSettings settings, Identifier modelId) {
         var options = geometry.settings;
-        var builder = new BasicBakedModel.Builder(options.ambientOcclusion(), true, false, ModelTransformation.NONE, ModelOverrideList.EMPTY)
+        var builder = new BasicBakedModel.Builder(options.ambientOcclusion(), sideLit, false, display, ModelOverrideList.EMPTY)
                 .setParticle(textureGetter.apply(resolve("#particle", null)));
 
         AffineTransformation rotation = settings.getRotation();

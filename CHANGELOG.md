@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- BTA: smooth lighting and ambient occlusion for OBJ faces when Smooth Lighting is on (blocks that glow stay flat-lit, like vanilla).
+- BTA: texture lookups and per-side light and visibility are cached instead of repeated per face.
+- StationAPI: OBJ block items now sit in the inventory, hand and on the ground like normal block items. The model JSON's `display` and `gui_light` are read, defaulting to StationAPI's `block/block` values.
+
 ## 0.1.0-alpha.1 (BTA 8.0.1)
 
 First alpha of Betafront for Better than Adventure. Expect rough edges.

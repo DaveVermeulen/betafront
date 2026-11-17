@@ -62,7 +62,9 @@ Faces with no material, or a material without `map_Kd`, use the `#default` textu
 | `shade_quads` | `true` | Darkens faces by direction like vanilla blocks |
 | `emissive_ambient` | `true` | Lets an MTL `Ka` above 0 make a material glow |
 | `mtl_override` | none | Use this `.mtl` instead of the file's `mtllib` line |
-| `ambient_occlusion` | `true` | StationAPI only: smooth lighting when the player has it on |
+| `ambient_occlusion` | `true` | Smooth lighting when the player has it on. On BTA, blocks that glow themselves stay flat-lit, like vanilla |
+| `display` | block defaults | StationAPI only: how the item sits in the inventory, hand, on the ground and in item frames, written like a modern `display` block (`gui`, `ground`, `fixed`, `thirdperson_righthand`, `firstperson_righthand`, ...). Leave it out to match normal block items |
+| `gui_light` | `side` | StationAPI only: `side` lights the inventory icon like a block, `front` like a flat item |
 
 Texture ids work like vanilla: `examplemod:block/lamp` is the `lamp.png` texture in the block textures folder (paths per build below).
 
@@ -127,7 +129,7 @@ No code is needed. The blockstate file points at the model JSON like any other S
 }
 ```
 
-For the item, put a model JSON with the same contents in `models/item/` (named after the block).
+For the item, put a model JSON with the same contents in `models/item/` (named after the block). It is shown like a normal block item unless you add a `display` block; `"parent": "examplemod:block/lamp"` doesn't work, because StationAPI only allows its own JSON models as parents.
 
 Your block should override `isOpaque()` and `isFullCube()` to return `false`.
 

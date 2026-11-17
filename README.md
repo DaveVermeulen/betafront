@@ -85,7 +85,9 @@ Both builds use the same JSON:
 | `automatic_culling` | `true` | Faces lying flat on a block side are hidden by a solid neighbour on that side |
 | `shade_quads` | `true` | Apply the game's per-direction face shading |
 | `emissive_ambient` | `true` | An MTL `Ka` above 0 makes that material glow (average of Ka, 0 to full bright) |
-| `ambient_occlusion` | `true` | StationAPI only: use smooth lighting when the player has it on. Not a NeoForge option |
+| `ambient_occlusion` | `true` | Use smooth lighting when the player has it on (on BTA, not for blocks that glow themselves, like vanilla). Not a NeoForge option |
+| `display` | block defaults | StationAPI only: item transforms for `gui`, `ground`, `fixed`, `thirdperson_righthand`, `firstperson_righthand`, ..., as in a modern model JSON. Defaults to StationAPI's `block/block` values |
+| `gui_light` | `side` | StationAPI only: `side` (block-style inventory lighting) or `front` |
 
 ### Textures
 
