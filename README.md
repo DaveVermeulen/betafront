@@ -170,6 +170,10 @@ Run these from the repository root:
 ./gradlew -p stationapi runClient # StationAPI dev client with the example blocks
 ```
 
+## Contributing
+
+New contributors and AI agents: start with [KNOWLEDGE.md](KNOWLEDGE.md), which explains the layout, the build, the BTA API names that work, and the project conventions.
+
 ## Roadmap
 
 Next up are smooth lighting for OBJ faces, publishing to a Maven repository, and a few small performance wins. See [ROADMAP.md](ROADMAP.md).
