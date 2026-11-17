@@ -37,7 +37,7 @@ You call `ObjModels.block(...)` from code, so Betafront is a compile dependency:
 ```kotlin
 // build.gradle.kts
 dependencies {
-    implementation(files("libs/betafront-bta-0.1.0-alpha.1+8.0.1.jar"))
+    implementation(files("libs/betafront-bta-1.0.0+8.0.1.jar"))
 }
 ```
 

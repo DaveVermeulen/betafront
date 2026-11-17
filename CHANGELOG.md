@@ -1,10 +1,34 @@
 # Changelog
 
-## Unreleased
+## 1.0.0
 
-- BTA: smooth lighting and ambient occlusion for OBJ faces when Smooth Lighting is on (blocks that glow stay flat-lit, like vanilla).
-- BTA: texture lookups and per-side light and visibility are cached instead of repeated per face.
-- StationAPI: OBJ block items now sit in the inventory, hand and on the ground like normal block items. The model JSON's `display` and `gui_light` are read, defaulting to StationAPI's `block/block` values.
+First stable release, for both builds. Both were tested in game.
+
+### BTA 8.0.1 (`betafront-bta-1.0.0+8.0.1.jar`)
+
+- Smooth lighting and ambient occlusion for OBJ faces when Smooth Lighting is on. Faces flat on a block side light exactly like vanilla; faces inside the block get blended values. Blocks that glow themselves stay flat-lit, like vanilla. Turn it off per model with `"ambient_occlusion": false`.
+- Texture lookups are cached per model, and light and face visibility are worked out once per block side instead of once per face.
+- Everything from 0.1.0-alpha.1: OBJ block models registered with `ObjModels.block(...)`, NeoForge-style model JSON, the item drawn with the block model, rotation by metadata, day/night lighting and glowing materials.
+- Requires HalpLibe 6.2.0+8.0.1 or newer.
+
+### Babric b1.7.3 with StationAPI (`betafront-stationapi-1.0.0.jar`)
+
+First release of the StationAPI build.
+
+- OBJ block and item models through normal StationAPI model JSONs: point a blockstate at a model JSON with `"loader": "betafront:obj"`. Blockstate `x`/`y` rotations, face culling, tint indexes (`betafront_TintIndex`) and glowing materials work.
+- Item models sit in the inventory, hand and on the ground like normal block items. The model JSON's `display` and `gui_light` are read, defaulting to StationAPI's `block/block` values.
+- Smooth lighting through StationAPI's renderer when Smooth Lighting is on. For glowing blocks and small models that sit low in the block, set `"ambient_occlusion": false` (see docs/adding-models.md).
+- Requires StationAPI 2.0.0-alpha.6.5 or newer and Babric (Fabric Loader) 0.19.3 or newer.
+
+### Both builds
+
+- The example crystal and ramp blocks are only registered in the development client, not in a normal game.
+
+Known limits:
+
+- Models and textures load from mod jars only on BTA, not from texture packs.
+- No entity or tile-entity models.
+- Material colours (`Kd`) and vertex colours are not applied as tints.
 
 ## 0.1.0-alpha.1 (BTA 8.0.1)
 

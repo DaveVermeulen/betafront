@@ -180,6 +180,6 @@ Rules for parallel work:
 
 ## Current state (keep this up to date)
 
-- Released: BTA 0.1.0-alpha.1. `main` has more since then: mod icon, dev recipes for StationAPI, root heap fix, roadmap, docs.
-- **In progress:** ROADMAP item 1 (smooth lighting for OBJ faces, BTA). A draft (per-vertex light and AO from BTA's `LightingCache` when Smooth Lighting is on, glowing blocks stay flat like vanilla, plus cached texture and light lookups) exists outside `main` and is paused. Don't start it again elsewhere without checking.
-- Next: ROADMAP item 2 (Maven on GitHub Pages), item 3 (small performance wins; partly in the draft above).
+- Released: **1.0.0** for both builds (tags `bta-v1.0.0`, `stationapi-v1.0.0`). Earlier: BTA 0.1.0-alpha.1 (pre-release).
+- Done in 1.0.0: ROADMAP item 1 (smooth lighting; BTA in `bta/.../client/ObjBlockModel.java`, StationAPI through its own renderer), item 3 steps 1-2 (caching), StationAPI item `display`/`gui_light`.
+- Next: ROADMAP item 2 (Maven on GitHub Pages), item 3 steps 3-4.
