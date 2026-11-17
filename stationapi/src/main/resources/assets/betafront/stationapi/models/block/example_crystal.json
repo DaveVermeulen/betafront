@@ -2,6 +2,7 @@
   "loader": "betafront:obj",
   "model": "betafront:stationapi/models/block/example_crystal.obj",
   "flip_v": true,
+  "ambient_occlusion": false,
   "textures": {
     "particle": "betafront:block/example_crystal",
     "texture0": "betafront:block/example_crystal"

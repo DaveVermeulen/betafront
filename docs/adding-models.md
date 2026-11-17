@@ -62,7 +62,7 @@ Faces with no material, or a material without `map_Kd`, use the `#default` textu
 | `shade_quads` | `true` | Darkens faces by direction like vanilla blocks |
 | `emissive_ambient` | `true` | Lets an MTL `Ka` above 0 make a material glow |
 | `mtl_override` | none | Use this `.mtl` instead of the file's `mtllib` line |
-| `ambient_occlusion` | `true` | Smooth lighting when the player has it on. On BTA, blocks that glow themselves stay flat-lit, like vanilla |
+| `ambient_occlusion` | `true` | Smooth lighting when the player has it on. On BTA, blocks that glow themselves stay flat-lit, like vanilla. On StationAPI, set it to `false` for glowing blocks and small models that sit low in the block: StationAPI blends the light of solid blocks around each vertex into faces inside the block, so they turn dark in pits and corners |
 | `display` | block defaults | StationAPI only: how the item sits in the inventory, hand, on the ground and in item frames, written like a modern `display` block (`gui`, `ground`, `fixed`, `thirdperson_righthand`, `firstperson_righthand`, ...). Leave it out to match normal block items |
 | `gui_light` | `side` | StationAPI only: `side` lights the inventory icon like a block, `front` like a flat item |
 
