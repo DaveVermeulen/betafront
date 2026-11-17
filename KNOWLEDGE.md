@@ -112,6 +112,11 @@ Many older BTA guides and DragonFly (BTA 7.3) use different names. Verified for 
 | Placement | `BlockLogic#onPlacedByMob(World, TilePosc, Side, Mob, double, double)`, `world.setBlockDataNotify(TilePosc, int)` |
 | Block ids | `BlockBuilder.build(name, numericId, logicSupplier)`, ids 0 to 16383 |
 | Creative menu | Only blocks with `BlockBuilder.setCreativeInventoryPlacement(new CreativeInventoryPlacement.Category(...))` show up |
+| BlockBuilder | Every `set...` returns a **copy**: always use the return value. `build("example_crystal", ...)` gives the lang key `tile.<modid>.example.crystal` (underscores become dots) |
+| Lang file | `assets/<ns>/lang/en_US/en_US.lang`, e.g. `tile.betafront.example.crystal.name=Example Crystal` |
+| Light index | A byte: `sky << 4 \| block` (`LightIndexHelper.lightIndex2i(sky, block)`, `skyLightFromIndex`, `avg`) |
+| Smooth lighting | `RenderBlocks.setupLighting` with the public `renderBlocks.cache` (`LightingCache`: `setupCache(block, world, pos)`, then `getLightIndex(dx,dy,dz)`, `getBrightness(dx,dy,dz)` = AO factor, `getOpacity(dx,dy,dz)` for offsets -1..1). Each face corner averages the 4 blocks touching it with `LightIndexHelper.avg`, skipping ones hidden behind two solid blocks. On only when `GameSettings.AMBIENT_OCCLUSION.value` is true **and** `block.emission == 0` |
+| Atlas reloads | `TextureRegistry.reloadGeneration` changes whenever the atlas is rebuilt; use it to invalidate cached `IconCoordinate`s |
 
 Lighting rules learned the hard way:
 
@@ -119,7 +124,17 @@ Lighting rules learned the hard way:
 - Directional face shading comes from the normal. For a quad with `shade_quads` off, send an upward normal.
 - Faces flat on the block edge take light from the neighbour they face; faces inside the block from the block itself.
 
-To read BTA's code: Loom's `genSources` fails for BTA ("Failed to get class entries"). Decompile the merged jar from the Gradle cache with Vineflower instead.
+To read BTA's code: Loom's `genSources` fails for BTA ("Failed to get class entries"). Decompile the merged jar from the Gradle cache with Vineflower instead, just the classes you need (on a machine that has built the BTA mod once):
+
+```bash
+J=~/.gradle/caches/fabric-loom/minecraftMaven/net/minecraft/minecraft-merged-deobf/8.0.1/minecraft-merged-deobf-8.0.1.jar
+V=$(find ~/.gradle/caches -name "vineflower-*.jar" | head -1)
+mkdir -p /tmp/bta-classes /tmp/bta-src && cd /tmp/bta-classes
+unzip -qo "$J" 'net/minecraft/client/render/block/model/RenderBlocks*'
+java -jar "$V" /tmp/bta-classes /tmp/bta-src
+```
+
+For signatures only, `javap -cp "$J" net.minecraft.core.util.helper.Side` is quicker. HalpLibe's jar: `find ~/.gradle/caches/modules-2 -name "halplibe-6.2.0+8.0.1.jar"`. Check names against the jars; don't guess them.
 
 ## Known pitfalls
 
@@ -160,6 +175,8 @@ Rules for parallel work:
 3. Changes to `core/` affect both builds: run the core tests, and say that both mods need a rebuild.
 4. When you learn something another agent would need (an API name, a pitfall, a maintainer's decision), add it here in the same commit.
 5. Say plainly what you could and couldn't verify: built, tested, or seen in game.
+6. Only one agent runs a dev client at a time (they share `bta/run/` and `stationapi/run/`, and there's one screen). Don't launch `runClient*` unless asked, since it opens a game window; close it afterwards. `--dry-run` checks the wiring without launching.
+7. When the maintainer says "pause" or "stop": stop editing at once, leave files as they are (don't revert or commit), and report `git status` and what the uncommitted diff does.
 
 ## Current state (keep this up to date)
 

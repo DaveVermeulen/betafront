@@ -9,3 +9,6 @@ The short version:
 - Other agents may be working on the repo too: pull before you start and before you commit.
 - Keep NeoForge-derived files' LGPL headers. Keep the README's AI disclaimer and dependency tables.
 - Keep `core/` free of game code. Update CHANGELOG.md, ROADMAP.md and KNOWLEDGE.md when what they say changes.
+- Check BTA/HalpLibe names against the real jars (`javap`, or Vineflower as in KNOWLEDGE.md); don't guess them. In BTA, `setShade1i` is only ambient occlusion: light goes through the light index, or day/night breaks.
+- Don't launch `runClient*` unless asked; one dev client at a time; close it afterwards.
+- If the maintainer says pause, stop, leave files untouched and report `git status`.
