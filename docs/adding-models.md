@@ -82,6 +82,8 @@ assets/examplemod/textures/block/lamp.png
 
 In the JSON, `"model"` is `"examplemod:models/block/lamp.obj"`.
 
+Texture packs can replace any of these files by putting their own copy at the same path, for example `assets/examplemod/models/block/lamp.obj` in the pack's zip. The JSON, `.obj`, `.mtl` and textures are each looked up separately: whatever the selected packs don't have comes from the mod jar. New texture names only work if the mod jar ships a texture with that name too, because the block atlas is built from the textures in the jars. Switching packs reloads the models.
+
 Register the model from your **client** entrypoint:
 
 ```java
@@ -118,6 +120,8 @@ assets/examplemod/stationapi/textures/block/lamp.png
 ```
 
 In the JSON, `"model"` includes the `stationapi/` folder: `"examplemod:stationapi/models/block/lamp.obj"`.
+
+Texture packs can replace any of these files by shipping their own copy at the same path, `stationapi/` folder included. Whatever the pack doesn't have comes from the mod jar.
 
 No code is needed. The blockstate file points at the model JSON like any other StationAPI model, and `x`/`y` rotations work as usual:
 

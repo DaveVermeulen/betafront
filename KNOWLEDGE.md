@@ -84,12 +84,13 @@ Tests: `core/src/test/.../ObjGeometryTest.java` (15 tests) with fixtures in `cor
 - `Betafront` (main entrypoint): `MOD_ID = HalpLibe.registerMod("betafront", true)` (the `true` makes HalpLibe stitch `assets/betafront/textures/block/*` into the atlas). Registers example blocks in dev.
 - `BetafrontClient` (Fabric `client` entrypoint, which BTA's loader supports): listens to HalpLibe `ClientEvents.BLOCK_MODEL_RELOAD` and adds our models to the dispatcher.
 - `ObjModels`: the public API. `ObjModels.block(block, "modid:block/name")` or with an `IntUnaryOperator` from metadata to Y rotation in degrees.
-- `ObjModelDefinition`: loads `assets/<ns>/models/<path>.json` from the classpath (no texture-pack support yet), parses the OBJ through core, resolves `#texture` references, and keeps the quads with one cached copy per rotation.
+- `ObjModelDefinition`: loads `assets/<ns>/models/<path>.json`, the `.obj` and the `.mtl` through `Minecraft.getMinecraft().texturePackList.getResourceAsStream("/assets/...")` (selected packs first, then the default pack), falling back to the classpath, parses the OBJ through core, resolves `#texture` references, and keeps the quads with one cached copy per rotation.
 - `ObjBlockModel extends BlockModelStandard`: `render(TessellatorGeneral, WorldSource, TilePosc)` for chunks, `renderStandalone(TessellatorGeneral, meta, byte lightIndex)` for items.
 - `ExampleContent`: crystal (id 9000, light 7) and ramp (id 9001, faces the player through metadata 0 to 3), both in the creative inventory under Miscellaneous.
 
 ### StationAPI build (`stationapi/`)
 
+- Texture packs override models and textures with no extra code: StationAPI's `TexturePackProvider` puts the selected pack into the `ResourceManager` that `ObjModelLoader` reads from (checked in game).
 - `ObjModelsClient` listens to `PreLoadUnbakedModelEvent` and swaps in `ObjModelLoader` for JSONs whose `loader` is an OBJ loader id.
 - `ObjUnbakedModel.bake()` turns the core quads into StationAPI `BakedQuad`s (int[32] vertex data; `Sprite.getFrameU` takes 0 to 16). Blockstate rotations, culling, tint and emission go through StationAPI.
 - Asset paths have an extra `stationapi/` folder: `assets/<ns>/stationapi/models/...` and `.../textures/...`.
@@ -116,6 +117,7 @@ Many older BTA guides and DragonFly (BTA 7.3) use different names. Verified for 
 | Lang file | `assets/<ns>/lang/en_US/en_US.lang`, e.g. `tile.betafront.example.crystal.name=Example Crystal` |
 | Light index | A byte: `sky << 4 \| block` (`LightIndexHelper.lightIndex2i(sky, block)`, `skyLightFromIndex`, `avg`) |
 | Smooth lighting | `RenderBlocks.setupLighting` with the public `renderBlocks.cache` (`LightingCache`: `setupCache(block, world, pos)`, then `getLightIndex(dx,dy,dz)`, `getBrightness(dx,dy,dz)` = AO factor, `getOpacity(dx,dy,dz)` for offsets -1..1). Each face corner averages the 4 blocks touching it with `LightIndexHelper.avg`, skipping ones hidden behind two solid blocks. On only when `GameSettings.AMBIENT_OCCLUSION.value` is true **and** `block.emission == 0` |
+| Texture packs | `Minecraft.getMinecraft().texturePackList` (`TexturePackList`): `getResourceAsStream("/assets/ns/path")` tries selected packs from highest priority down, then the default pack. Changing packs calls `refresh()`, which reloads `BlockModelDispatcher` (so HalpLibe's `BLOCK_MODEL_RELOAD` fires) and rebuilds the atlas. Atlas images are already read through the packs, but atlas entries come from the textures in the jars |
 | Atlas reloads | `TextureRegistry.reloadGeneration` changes whenever the atlas is rebuilt; use it to invalidate cached `IconCoordinate`s |
 
 Lighting rules learned the hard way:
@@ -180,6 +182,6 @@ Rules for parallel work:
 
 ## Current state (keep this up to date)
 
-- Released: **1.0.0** for both builds (tags `bta-v1.0.0`, `stationapi-v1.0.0`). Earlier: BTA 0.1.0-alpha.1 (pre-release).
+- Released: BTA **1.1.0** (tag `bta-v1.1.0`, texture pack overrides) and StationAPI **1.0.0** (tag `stationapi-v1.0.0`). BTA 1.0.0 before that. Earlier: BTA 0.1.0-alpha.1 (pre-release).
 - Done in 1.0.0: ROADMAP item 1 (smooth lighting; BTA in `bta/.../client/ObjBlockModel.java`, StationAPI through its own renderer), item 3 steps 1-2 (caching), StationAPI item `display`/`gui_light`.
 - Next: ROADMAP item 2 (Maven on GitHub Pages), item 3 steps 3-4.

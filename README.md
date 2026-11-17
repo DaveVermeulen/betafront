@@ -125,7 +125,7 @@ ObjModels.block(ExampleBlocks.RAMP, "examplemod:block/ramp", meta -> new int[] {
 
 The block's item is drawn with the same model. Blocks with an OBJ model are usually not full cubes, so their `BlockLogic` should return `false` from `isSolidRender()` and `isCubeShaped()`. Otherwise neighbouring faces get hidden behind it.
 
-Models are read from the mod jars on the classpath; texture packs can't replace them yet.
+Texture packs can replace the model JSON, `.obj`, `.mtl` and textures by shipping files at the same paths; anything a pack doesn't have comes from the mod jar. This works in the StationAPI build too, with the extra `stationapi/` folder in the paths.
 
 ## Using it in a StationAPI mod
 

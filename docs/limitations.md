@@ -10,7 +10,7 @@ These don't work yet:
 
 ### BTA build only
 
-- Models and textures load from mod jars only; texture packs can't replace them.
+- Texture packs can replace a model's files and textures, but can't add new texture names: a texture the mod jar doesn't ship isn't in the block atlas, so a pack's `.mtl` or JSON can only point at textures that exist in some mod jar.
 - Rotation is around the vertical axis only, in steps of 90 degrees, chosen by block metadata.
 - Tint indexes (`betafront_TintIndex`) are not applied yet.
 

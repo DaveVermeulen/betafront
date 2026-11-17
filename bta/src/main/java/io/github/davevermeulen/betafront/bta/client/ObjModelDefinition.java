@@ -10,6 +10,7 @@ import io.github.davevermeulen.betafront.obj.ObjSettings;
 import io.github.davevermeulen.betafront.obj.ObjTokenizer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.Minecraft;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -71,7 +72,8 @@ public final class ObjModelDefinition {
     }
 
     /**
-     * Loads {@code assets/<namespace>/models/<path>.json} for a model id such as {@code mymod:block/lamp}.
+     * Loads {@code assets/<namespace>/models/<path>.json} for a model id such as {@code mymod:block/lamp},
+     * and the .obj and .mtl it names, preferring the selected texture packs over the mod jars.
      */
     public static ObjModelDefinition load(String modelId) throws IOException {
         JsonObject json;
@@ -142,12 +144,21 @@ public final class ObjModelDefinition {
         return namespace + ":" + path;
     }
 
-    /** Opens {@code namespace:path} as {@code assets/namespace/path} on the classpath. */
+    /**
+     * Opens {@code namespace:path} as {@code /assets/namespace/path}: from the highest selected texture pack
+     * that has it, else from the mod jars on the classpath. Texture pack changes rebuild the block model
+     * dispatcher, which reloads every model through here.
+     */
     private static InputStream open(String location) throws IOException {
         int colon = location.indexOf(':');
         String namespace = colon < 0 ? "minecraft" : location.substring(0, colon);
-        String path = location.substring(colon + 1);
-        InputStream in = ObjModelDefinition.class.getResourceAsStream("/assets/" + namespace + "/" + path);
+        String path = "/assets/" + namespace + "/" + location.substring(colon + 1);
+        InputStream in = null;
+        Minecraft mc = Minecraft.getMinecraft();
+        if (mc != null && mc.texturePackList != null)
+            in = mc.texturePackList.getResourceAsStream(path);
+        if (in == null)
+            in = ObjModelDefinition.class.getResourceAsStream(path);
         if (in == null)
             throw new FileNotFoundException("Missing OBJ resource: " + location);
         return in;

@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.1.0 (BTA only)
+
+### BTA 8.0.1 (`betafront-bta-1.1.0+8.0.1.jar`)
+
+- Texture packs can override OBJ models: the model JSON, `.obj`, `.mtl` and textures are read from the highest selected pack that has them, falling back to the mod jar. Changing packs reloads the models.
+
+### Babric b1.7.3 with StationAPI
+
+No new release. Texture pack overrides already work there (checked in game), since everything is read through StationAPI's resource manager; files go under `assets/<modid>/stationapi/`.
+
 ## 1.0.0
 
 First stable release, for both builds. Both were tested in game.
